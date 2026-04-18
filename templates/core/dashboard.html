@@ -1,0 +1,73 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Dashboard - Sky Engineering{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <p class="page-title">Dashboard</p>
+    <p class="page-sub">Welcome back, {{ user.first_name|default:user.username }}</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <p class="stat-label">Departments</p>
+            <p class="stat-value">{{ total_departments }}</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <p class="stat-label">Teams</p>
+            <p class="stat-value">{{ total_teams }}</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <p class="stat-label">Engineers</p>
+            <p class="stat-value">{{ total_users }}</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <p class="stat-label">Repositories</p>
+            <p class="stat-value">{{ total_repos }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="card p-3">
+    <p class="section-title mb-3">Recent teams</p>
+    <table class="table table-hover mb-0">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Department</th>
+                <th>Manager</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in recent_teams %}
+            <tr>
+                <td>{{ team.team_name }}</td>
+                <td>{{ team.department.department_name }}</td>
+                <td>{{ team.manager.get_full_name|default:"Unassigned" }}</td>
+                <td>
+                    {% if team.status == 'active' %}
+                        <span class="badge-status badge-active">Active</span>
+                    {% elif team.status == 'restructuring' %}
+                        <span class="badge-status badge-restructuring">Restructuring</span>
+                    {% else %}
+                        <span class="badge-status badge-disbanded">Disbanded</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center text-muted py-4">No teams yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
