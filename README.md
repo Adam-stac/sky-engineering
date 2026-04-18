@@ -16,7 +16,7 @@ Built with Django, Python, SQLite and Bootstrap 5.
 ### Step 1 - Clone the repository
 Open a terminal and run:
 ```
-git clone https://github.com/YOUR_ACTUAL_LINK_HERE.git
+git clone https://github.com/Adam-stac/sky-engineering.git
 cd sky-engineering
 ```
 
