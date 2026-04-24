@@ -41,7 +41,14 @@ def team_type_list(request):
 
 @login_required
 def dependency_list(request):
-    pass
+    dependencies = Dependency.objects.select_related(
+        'source_team', 'target_team',
+        'source_team__department', 'target_team__department'
+    ).all()
+    context = {
+        'dependencies': dependencies,
+    }
+    return render(request, 'organisation/dependency_list.html', context)
 
 
 @login_required

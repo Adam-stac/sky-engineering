@@ -98,3 +98,23 @@
     color: #64748b;
     margin: 2px 0 0;
 }
+
+.badge-critical {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-high {
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+.badge-medium {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+.badge-low {
+    background: #dcfce7;
+    color: #15803d;
+}
