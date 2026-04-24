@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Departments - Sky Engineering{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/organisation.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <p class="page-title">Departments</p>
+        <p class="page-sub">All departments and their teams</p>
+    </div>
+    <a href="{% url 'organisation:org_home' %}" class="btn-outline-custom">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="row g-3">
+    {% for department in departments %}
+    <div class="col-md-6">
+        <a href="{% url 'organisation:department_detail' department.pk %}" class="department-card">
+            <div class="d-flex align-items-start justify-content-between mb-2">
+                <p class="dept-name">{{ department.department_name }}</p>
+                <span class="dept-team-count">{{ department.teams.count }} teams</span>
+            </div>
+            {% if department.description %}
+                <p class="dept-description">{{ department.description }}</p>
+            {% else %}
+                <p class="dept-description text-muted">No description provided</p>
+            {% endif %}
+            {% if department.leader %}
+                <p class="dept-leader"><i class="bi bi-person me-1"></i>{{ department.leader.get_full_name }}</p>
+            {% endif %}
+            {% if department.location %}
+                <p class="dept-location"><i class="bi bi-geo-alt me-1"></i>{{ department.location }}</p>
+            {% endif %}
+        </a>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="card p-4 text-center text-muted">
+            No departments found.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
