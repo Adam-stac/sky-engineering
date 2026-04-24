@@ -5,6 +5,11 @@ from .models import (
     EngineeringTeam, TeamStaffAllocation,
     Dependency, CodeRepository, ContactChannel, AuditLog
 )
+from .models import (
+    User, Engineer, Manager, Department,
+    EngineeringTeam, TeamStaffAllocation,
+    Dependency, CodeRepository, ContactChannel, AuditLog, TeamType
+)
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
@@ -45,6 +50,11 @@ class ContactChannelAdmin(admin.ModelAdmin):
 class AuditLogAdmin(admin.ModelAdmin):
     list_display = ('action_type', 'entity_type', 'user', 'timestamp')
     list_filter = ('action_type',)
+
+@admin.register(TeamType)
+class TeamTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description', 'created_date')
+    search_fields = ('name',)
 
 admin.site.register(Engineer)
 admin.site.register(Manager)

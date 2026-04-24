@@ -35,26 +35,33 @@
 </div>
 
 <div class="row g-3">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <a href="{% url 'organisation:department_list' %}" class="org-nav-card">
             <i class="bi bi-buildings org-nav-icon"></i>
             <p class="org-nav-title">Departments</p>
             <p class="org-nav-sub">View all departments and their teams</p>
         </a>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <a href="{% url 'organisation:dependency_list' %}" class="org-nav-card">
             <i class="bi bi-arrow-left-right org-nav-icon"></i>
             <p class="org-nav-title">Dependencies</p>
             <p class="org-nav-sub">View upstream and downstream dependencies</p>
         </a>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <a href="{% url 'organisation:org_chart' %}" class="org-nav-card">
             <i class="bi bi-diagram-3 org-nav-icon"></i>
             <p class="org-nav-title">Org Chart</p>
             <p class="org-nav-sub">Visualise the organisation structure</p>
         </a>
+    </div>
+    <div class="col-md-3">
+    <a href="{% url 'organisation:team_type_list' %}" class="org-nav-card">
+        <i class="bi bi-tags org-nav-icon"></i>
+        <p class="org-nav-title">Team Types</p>
+        <p class="org-nav-sub">View categories of engineering teams</p>
+    </a>
     </div>
 </div>
 {% endblock %}

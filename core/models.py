@@ -55,6 +55,16 @@ class Department(models.Model):
     def __str__(self):
         return self.department_name
 
+# TEAM TYPE
+
+class TeamType(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
+    created_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name    
+
 # ENGINEERING TEAM
 
 class EngineeringTeam(models.Model):
@@ -84,6 +94,13 @@ class EngineeringTeam(models.Model):
         Department,
         on_delete=models.RESTRICT,
         related_name='teams'
+    )
+    team_type = models.ForeignKey(
+    'TeamType',
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True,
+    related_name='teams'
     )
 
     def __str__(self):

@@ -118,3 +118,13 @@
     background: #dcfce7;
     color: #15803d;
 }
+
+.team-tag {
+    display: inline-block;
+    background: #f1f5f9;
+    color: #0f172a;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin: 2px;
+}

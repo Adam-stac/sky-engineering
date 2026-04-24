@@ -36,7 +36,12 @@ def department_detail(request, pk):
 
 @login_required
 def team_type_list(request):
-    pass
+    from core.models import TeamType
+    team_types = TeamType.objects.prefetch_related('teams').all()
+    context = {
+        'team_types': team_types,
+    }
+    return render(request, 'organisation/team_type_list.html', context)
 
 
 @login_required
