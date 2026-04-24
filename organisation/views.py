@@ -24,7 +24,14 @@ def department_list(request):
 
 @login_required
 def department_detail(request, pk):
-    pass
+    department = get_object_or_404(Department, pk=pk)
+    teams = EngineeringTeam.objects.filter(department=department).select_related('manager')
+    context = {
+        'department': department,
+        'teams': teams,
+        'team_count': teams.count(),
+    }
+    return render(request, 'organisation/department_detail.html', context)
 
 
 @login_required
