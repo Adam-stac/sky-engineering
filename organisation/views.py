@@ -53,4 +53,40 @@ def dependency_list(request):
 
 @login_required
 def org_chart(request):
-    pass
+    departments = Department.objects.prefetch_related(
+        'teams'
+    ).select_related('leader').all()
+    
+    import json
+    chart_data = []
+    for dept in departments:
+        dept_node = {
+            'id': f'dept_{dept.pk}',
+            'name': dept.department_name,
+            'type': 'department',
+            'leader': dept.leader.get_full_name() if dept.leader else 'Unassigned',
+            'children': []
+        }
+        for team in dept.teams.all():
+            team_node = {
+                'id': f'team_{team.pk}',
+                'name': team.team_name,
+                'type': 'team',
+                'status': team.status,
+                'manager': team.manager.get_full_name() if team.manager else 'Unassigned',
+                'children': []
+            }
+            dept_node['children'].append(team_node)
+        chart_data.append(dept_node)
+
+    root = {
+        'id': 'root',
+        'name': 'Sky Engineering',
+        'type': 'root',
+        'children': chart_data
+    }
+
+    context = {
+        'chart_data': json.dumps(root),
+    }
+    return render(request, 'organisation/org_chart.html', context)
