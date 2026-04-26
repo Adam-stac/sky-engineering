@@ -1,15 +1,16 @@
-# Python cache
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
-# Virtual environment
-venv/
-
-# Database
+# Django
 db.sqlite3
+*.log
 
-# VS Code
-.vscode/
-
-# Environment variables
+# Environment
+venv/
 .env
+
+# IDE
+.vscode/
