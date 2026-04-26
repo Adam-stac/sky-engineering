@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1 class="page-title">Reports</h1>
+            <p class="page-sub">Overview of engineering teams and departments</p>
+        </div>
+        <div>
+            <a href="{% url 'reports:department_summary' %}" class="btn btn-primary me-2">Department Summary</a>
+            <a href="{% url 'reports:export_pdf' %}" class="btn btn-danger me-2">Download PDF</a>
+            <a href="{% url 'reports:export_excel' %}" class="btn btn-success">Download Excel</a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">Total Teams</div>
+                <div class="stat-value">{{ total_teams }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">Total Departments</div>
+                <div class="stat-value">{{ total_departments }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-label">Teams Without Members</div>
+                <div class="stat-value">{{ teams_without_members|length }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">All Teams</div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th>Department</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams %}
+                    <tr>
+                        <td>{{ team.team_name }}</td>
+                        <td>{{ team.department }}</td>
+                        <td>{{ team.status }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3">No teams found</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Teams Without Members</div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams_without_members %}
+                    <tr>
+                        <td>{{ team.team_name }}</td>
+                        <td>{{ team.department }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2">All teams have members</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
