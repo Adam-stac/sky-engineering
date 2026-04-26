@@ -1,14 +1,16 @@
-venv/
+# Python
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+
+# Django
 db.sqlite3
-*.sqlite3
-.env
 *.log
-media/
-.DS_Store
-*.egg-info/
-dist/
-build/
+
+# Environment
+venv/
+.env
+
+# IDE
 .vscode/
