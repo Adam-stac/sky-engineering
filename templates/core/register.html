@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Register - Sky Engineering{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/auth.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content_unauth %}
+<div class="auth-card">
+    <div class="auth-brand">
+        <div class="auth-brand-icon">
+            <i class="bi bi-diagram-3"></i>
+        </div>
+        <div>
+            <p class="auth-brand-title">Sky Engineering</p>
+            <p class="auth-brand-sub">Teams Registry</p>
+        </div>
+    </div>
+
+    <p class="auth-title">Create account</p>
+    <p class="auth-sub">Register to access Sky Engineering</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label class="form-label">First name</label>
+                <input type="text" name="first_name" class="form-control" required>
+            </div>
+            <div class="col-6 mb-3">
+                <label class="form-label">Last name</label>
+                <input type="text" name="last_name" class="form-control" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email address</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+        <div class="row">
+            <div class="col-6 mb-4">
+                <label class="form-label">Password</label>
+                <input type="password" name="password1" class="form-control" required>
+            </div>
+            <div class="col-6 mb-4">
+                <label class="form-label">Confirm password</label>
+                <input type="password" name="password2" class="form-control" required>
+            </div>
+        </div>
+        <button type="submit" class="btn-dark-custom">Create account</button>
+    </form>
+
+    <p class="auth-footer">
+        Already have an account? <a href="{% url 'login' %}">Sign in</a>
+    </p>
+</div>
+{% endblock content_unauth %}

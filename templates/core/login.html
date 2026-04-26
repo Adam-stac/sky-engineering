@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Login - Sky Engineering{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/auth.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content_unauth %}
+<div class="auth-card">
+    <div class="auth-brand">
+        <div class="auth-brand-icon">
+            <i class="bi bi-diagram-3"></i>
+        </div>
+        <div>
+            <p class="auth-brand-title">Sky Engineering</p>
+            <p class="auth-brand-sub">Teams Registry</p>
+        </div>
+    </div>
+
+    <p class="auth-title">Welcome back</p>
+    <p class="auth-sub">Sign in to your account</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" required autofocus>
+        </div>
+        <div class="mb-4">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn-dark-custom">Sign in</button>
+    </form>
+
+    <p class="auth-footer">
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>
+    </p>
+</div>
+{% endblock content_unauth %}
