@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Name: Ayaan Surani
 # Student ID: W2070551
 # Student: Student 3
@@ -16,3 +17,8 @@ class MessageAdmin(admin.ModelAdmin):
     list_filter = ("status", "is_read", "sent_at")
     search_fields = ("subject", "body", "sender__username", "recipient__username")
 
+=======
+from django.contrib import admin
+
+# Register your models here.
+>>>>>>> 8289812d87f73ee31ade840543d36b3bee9ca8e6

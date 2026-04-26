@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Name: Ayaan Surani
 # Student ID: W2070551
 # Student: Student 3
@@ -105,3 +106,8 @@ class MessageViewsTests(TestCase):
 
         message_obj.refresh_from_db()
         self.assertTrue(message_obj.is_read)
+=======
+from django.test import TestCase
+
+# Create your tests here.
+>>>>>>> 8289812d87f73ee31ade840543d36b3bee9ca8e6

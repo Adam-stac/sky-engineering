@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Reports{% endblock %}
+
+{% load static %}
+{% block extra_css %}
+<link href="{% static 'css/reports.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1 class="page-title">Department Summary</h1>
+            <p class="page-sub">Teams grouped by department</p>
+        </div>
+        <a href="{% url 'reports:index' %}" class="btn btn-secondary">Back to Reports</a>
+    </div>
+
+    {% for item in summary %}
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>{{ item.department }}</span>
+            <span class="badge bg-primary">{{ item.team_count }} team{{ item.team_count|pluralize }}</span>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in item.teams %}
+                    <tr>
+                        <td>{{ team.name }}</td>
+                        <td>{{ team.status }}</td>
+                        <td><a href="{% url 'reports:team_detail' team.id %}">View Details</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3">No teams in this department</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% empty %}
+    <p>No departments found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

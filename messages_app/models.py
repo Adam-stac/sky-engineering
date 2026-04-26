@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Name: Ayaan Surani
 # Student ID: W2070551
 # Student: Student 3
@@ -60,3 +61,8 @@ class Message(models.Model):
     def mailbox_timestamp(self):
         # Sent messages show sent time, but drafts show the latest saved time.
         return self.sent_at or self.updated_at or self.created_at
+=======
+from django.db import models
+
+# Create your models here.
+>>>>>>> 8289812d87f73ee31ade840543d36b3bee9ca8e6

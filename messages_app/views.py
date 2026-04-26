@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Name: Ayaan Surani
 # Student ID: W2070551
 # Student: Student 3
@@ -184,3 +185,8 @@ def message_detail(request, pk):
     }
     context.update(_mailbox_counts(request.user))
     return render(request, "messages_app/message_detail.html", context)
+=======
+from django.shortcuts import render
+
+# Create your views here.
+>>>>>>> 8289812d87f73ee31ade840543d36b3bee9ca8e6
