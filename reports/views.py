@@ -13,16 +13,16 @@ def reports_index(request):
     departments = Department.objects.all()
     total_teams = teams.count()
     total_departments = departments.count()
-    teams_without_members = [t for t in teams if t.members.count() == 0]
+    teams_without_managers = teams.filter(manager=None)
 
     context = {
         'teams': teams,
         'departments': departments,
         'total_teams': total_teams,
         'total_departments': total_departments,
-        'teams_without_members': teams_without_members,
+        'teams_without_managers': teams_without_managers,
     }
-    return render(request, 'core/reports/index.html', context)
+    return render(request, 'reports/index.html', context)
 
 
 @login_required
@@ -40,7 +40,7 @@ def department_summary(request):
     context = {
         'summary': summary,
     }
-    return render(request, 'core/reports/department_summary.html', context)
+    return render(request, 'reports/department_summary.html', context)
 
 
 @login_required
@@ -52,7 +52,7 @@ def team_detail(request, team_id):
         'team': team,
         'members': members,
     }
-    return render(request, 'core/reports/team_detail.html', context)
+    return render(request, 'reports/team_detail.html', context)
 
 
 @login_required
@@ -62,7 +62,7 @@ def export_pdf(request):
 
     teams = EngineeringTeam.objects.all()
     departments = Department.objects.all()
-    teams_without_members = [t for t in teams if t.members.count() == 0]
+    teams_without_managers = teams.filter(manager=None)
 
     p = canvas.Canvas(response, pagesize=letter)
     p.setFont("Helvetica-Bold", 16)
@@ -71,7 +71,7 @@ def export_pdf(request):
     p.setFont("Helvetica-Bold", 12)
     p.drawString(50, 720, f"Total Teams: {teams.count()}")
     p.drawString(50, 700, f"Total Departments: {departments.count()}")
-    p.drawString(50, 680, f"Teams Without Members: {len(teams_without_members)}")
+    p.drawString(50, 680, f"Teams Without Managers: {teams_without_managers.count()}")
 
     p.setFont("Helvetica-Bold", 12)
     p.drawString(50, 650, "All Teams:")
@@ -98,7 +98,7 @@ def export_excel(request):
 
     teams = EngineeringTeam.objects.all()
     departments = Department.objects.all()
-    teams_without_members = [t for t in teams if t.members.count() == 0]
+    teams_without_managers = teams.filter(manager=None)
 
     wb = openpyxl.Workbook()
 
@@ -107,16 +107,16 @@ def export_excel(request):
     ws1.append(["Metric", "Value"])
     ws1.append(["Total Teams", teams.count()])
     ws1.append(["Total Departments", departments.count()])
-    ws1.append(["Teams Without Members", len(teams_without_members)])
+    ws1.append(["Teams Without Managers", teams_without_managers.count()])
 
     ws2 = wb.create_sheet("All Teams")
     ws2.append(["Team Name", "Department", "Status"])
     for team in teams:
         ws2.append([team.team_name, str(team.department), team.status])
 
-    ws3 = wb.create_sheet("Teams Without Members")
+    ws3 = wb.create_sheet("Teams Without Managers")
     ws3.append(["Team Name", "Department"])
-    for team in teams_without_members:
+    for team in teams_without_managers:
         ws3.append([team.team_name, str(team.department)])
 
     wb.save(response)

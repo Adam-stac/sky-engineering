@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Dependencies - Sky Engineering{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/organisation.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <p class="page-title">Dependencies</p>
+        <p class="page-sub">Upstream and downstream team dependencies</p>
+    </div>
+    <a href="{% url 'organisation:org_home' %}" class="btn-outline-custom">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="card p-3">
+    <table class="table table-hover mb-0">
+        <thead>
+            <tr>
+                <th>Source Team</th>
+                <th>Department</th>
+                <th>Target Team</th>
+                <th>Department</th>
+                <th>Type</th>
+                <th>Criticality</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dep in dependencies %}
+            <tr>
+                <td>{{ dep.source_team.team_name }}</td>
+                <td>{{ dep.source_team.department.department_name }}</td>
+                <td>{{ dep.target_team.team_name }}</td>
+                <td>{{ dep.target_team.department.department_name }}</td>
+                <td>{{ dep.dependency_type|default:"-" }}</td>
+                <td>
+                    {% if dep.criticality_level == 'critical' %}
+                        <span class="badge-status badge-critical">Critical</span>
+                    {% elif dep.criticality_level == 'high' %}
+                        <span class="badge-status badge-high">High</span>
+                    {% elif dep.criticality_level == 'medium' %}
+                        <span class="badge-status badge-medium">Medium</span>
+                    {% elif dep.criticality_level == 'low' %}
+                        <span class="badge-status badge-low">Low</span>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-muted py-4">No dependencies found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
