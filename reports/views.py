@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-from django.shortcuts import render
-
-# Create your views here.
-=======
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -126,4 +121,3 @@ def export_excel(request):
 
     wb.save(response)
     return response
->>>>>>> 8289812d87f73ee31ade840543d36b3bee9ca8e6
