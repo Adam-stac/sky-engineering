@@ -1,0 +1,78 @@
+{# Name: Ayaan Surani. Student ID: W2070551. Student: Student 3. Feature: Messages. Contribution: Individual template for viewing one full message. #}
+
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} | Sky Engineering{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/messages_app.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- This page shows one message in full. -->
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+    <div>
+        <h1 class="page-title">{{ page_title }}</h1>
+        <p class="page-sub">{{ page_sub }}</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        {% if can_edit_draft %}
+        <a href="{% url 'messages_app:edit_draft' message_obj.pk %}" class="btn btn-outline-secondary">Edit Draft</a>
+        {% elif reply_recipient_id %}
+        <a href="{% url 'messages_app:new' %}?recipient={{ reply_recipient_id }}" class="btn btn-outline-secondary">Reply</a>
+        {% endif %}
+        <a href="{% url 'messages_app:inbox' %}" class="btn btn-dark message-action-btn">Back to Messages</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card detail-meta-card">
+            <div class="card-body p-4">
+                <!-- Basic message details are shown on the left side. -->
+                <div class="detail-meta-row">
+                    <span class="detail-label">From</span>
+                    <span class="detail-value">{{ message_obj.sender.get_full_name|default:message_obj.sender.username }}</span>
+                </div>
+                <div class="detail-meta-row">
+                    <span class="detail-label">To</span>
+                    <span class="detail-value">
+                        {% if message_obj.recipient %}
+                            {{ message_obj.recipient.get_full_name|default:message_obj.recipient.username }}
+                        {% else %}
+                            Not selected
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="detail-meta-row">
+                    <span class="detail-label">Status</span>
+                    <span class="detail-value">
+                        {% if message_obj.status == 'draft' %}
+                        <span class="badge-status badge-draft">Draft</span>
+                        {% elif message_obj.is_read %}
+                        <span class="badge-status badge-sent-custom">Read</span>
+                        {% else %}
+                        <span class="badge-status badge-unread">Unread</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="detail-meta-row">
+                    <span class="detail-label">Updated</span>
+                    <span class="detail-value">{{ message_obj.mailbox_timestamp|date:"d M Y, H:i" }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body p-4">
+                <!-- The subject and body are shown clearly for reading. -->
+                <h2 class="message-detail-subject">{{ message_obj.subject|default:"Untitled message" }}</h2>
+                <div class="message-detail-body">{{ message_obj.body|linebreaksbr }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
