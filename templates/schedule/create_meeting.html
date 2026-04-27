@@ -1,0 +1,20 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Create Meeting</h2>
+
+<form method="post" class="card p-4">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <div class="d-flex gap-2 mt-3">
+  <button type="submit" class="btn btn-success btn-sm px-3">
+    Save
+  </button>
+
+  <a href="{% url 'schedule_home' %}" class="btn btn-light btn-sm px-3">
+    Cancel
+  </a>
+</div></form>
+
+{% endblock %}

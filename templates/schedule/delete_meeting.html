@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h1>Delete Meeting</h1>
+  <p>Are you sure you want to delete "{{ meeting.title }}"?</p>
+</div>
+
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn" type="submit">Yes, delete</button>
+    <a href="{% url 'schedule_home' %}">Cancel</a>
+  </form>
+</div>
+
+{% endblock %}

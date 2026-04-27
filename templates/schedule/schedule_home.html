@@ -1,0 +1,45 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<h2 class="mb-3">Schedule</h2>
+
+<a href="{% url 'create_meeting' %}" class="btn btn-outline-primary mb-3">
+      + Create Meeting
+</a>
+
+<div class="card">
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Platform</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for meeting in meetings %}
+        <tr>
+          <td>{{ meeting.title }}</td>
+          <td>{{ meeting.date }}</td>
+          <td>{{ meeting.time }}</td>
+          <td>{{ meeting.platform }}</td>
+          <td>
+            <a href="{% url 'delete_meeting' meeting.id %}" class="btn btn-danger btn-sm">
+              Delete
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5">No meetings scheduled yet.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
