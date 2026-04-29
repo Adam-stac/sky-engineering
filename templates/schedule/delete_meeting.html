@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Delete Meeting - Sky Engineering{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/schedule.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="mb-4">
+    <p class="page-title">Delete Meeting</p>
+    <p class="page-sub">Are you sure you want to delete "{{ meeting.title }}"?</p>
+</div>
+
+<div class="card p-4" style="max-width: 500px;">
+    <form method="post">
+        {% csrf_token %}
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn-schedule" style="background:#991b1b;">
+                <i class="bi bi-trash"></i> Yes, delete
+            </button>
+            <a href="{% url 'schedule:schedule_home' %}" class="btn-outline-custom">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

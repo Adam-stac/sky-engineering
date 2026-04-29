@@ -1,3 +1,6 @@
+/* Name: Adam | Student ID: W2039612 | Student: Student 2 | Feature: Organisation */
+
+/* Navigation cards on the organisation home page */
 .org-nav-card {
     display: block;
     background: #fff;
@@ -33,6 +36,7 @@
     margin: 0;
 }
 
+/* Shared back button used across all organisation pages */
 .btn-outline-custom {
     display: inline-flex;
     align-items: center;
@@ -51,6 +55,7 @@
     color: #0f172a;
 }
 
+/* Department cards on the department list page */
 .department-card {
     display: block;
     background: #fff;
@@ -99,6 +104,7 @@
     margin: 2px 0 0;
 }
 
+/* Criticality badges for the dependency list page */
 .badge-critical {
     background: #fee2e2;
     color: #991b1b;
@@ -119,6 +125,7 @@
     color: #15803d;
 }
 
+/* Team tags shown on the team types page */
 .team-tag {
     display: inline-block;
     background: #f1f5f9;

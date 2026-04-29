@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Create Meeting - Sky Engineering{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/schedule.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <p class="page-title">Create Meeting</p>
+        <p class="page-sub">Schedule a new meeting for your team</p>
+    </div>
+    <a href="{% url 'schedule:schedule_home' %}" class="btn-outline-custom">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="card p-4" style="max-width: 600px;">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn-schedule">
+                <i class="bi bi-calendar-check"></i> Save Meeting
+            </button>
+            <a href="{% url 'schedule:schedule_home' %}" class="btn-outline-custom">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

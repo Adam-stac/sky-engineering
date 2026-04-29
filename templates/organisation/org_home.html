@@ -1,3 +1,4 @@
+<!-- Name: Adam | Student ID: W2039612 | Student: Student 2 | Feature: Organisation -->
 {% extends 'core/base.html' %}
 {% load static %}
 
@@ -57,11 +58,11 @@
         </a>
     </div>
     <div class="col-md-3">
-    <a href="{% url 'organisation:team_type_list' %}" class="org-nav-card">
-        <i class="bi bi-tags org-nav-icon"></i>
-        <p class="org-nav-title">Team Types</p>
-        <p class="org-nav-sub">View categories of engineering teams</p>
-    </a>
+        <a href="{% url 'organisation:team_type_list' %}" class="org-nav-card">
+            <i class="bi bi-tags org-nav-icon"></i>
+            <p class="org-nav-title">Team Types</p>
+            <p class="org-nav-sub">View categories of engineering teams</p>
+        </a>
     </div>
 </div>
-{% endblock %}
+{% endblock content %}
