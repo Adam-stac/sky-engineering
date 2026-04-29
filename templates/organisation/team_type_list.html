@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Team Types - Sky Engineering{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/organisation.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <p class="page-title">Team Types</p>
+        <p class="page-sub">Categories of engineering teams across Sky</p>
+    </div>
+    <a href="{% url 'organisation:org_home' %}" class="btn-outline-custom">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="row g-3">
+    {% for team_type in team_types %}
+    <div class="col-md-6">
+        <div class="card p-3">
+            <div class="d-flex align-items-start justify-content-between mb-2">
+                <p class="dept-name">{{ team_type.name }}</p>
+                <span class="dept-team-count">{{ team_type.teams.count }} teams</span>
+            </div>
+            {% if team_type.description %}
+                <p class="dept-description">{{ team_type.description }}</p>
+            {% else %}
+                <p class="dept-description text-muted">No description provided</p>
+            {% endif %}
+            {% if team_type.teams.count > 0 %}
+            <div class="mt-2">
+                {% for team in team_type.teams.all %}
+                    <span class="team-tag">{{ team.team_name }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="card p-4 text-center text-muted">
+            No team types found.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

@@ -1,0 +1,19 @@
+/* Reports app custom styles */
+
+.btn-outline-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 0.5px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #0f172a;
+    text-decoration: none;
+    background: #fff;
+}
+
+.btn-outline-custom:hover {
+    background: #f8fafc;
+    color: #0f172a;
+}

@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Org Chart - Sky Engineering{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/organisation.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <p class="page-title">Org Chart</p>
+        <p class="page-sub">Visual structure of departments and teams</p>
+    </div>
+    <a href="{% url 'organisation:org_home' %}" class="btn-outline-custom">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="card p-3">
+    <div id="org-chart-container" data-chart='{{ chart_data|safe }}'></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="{% static 'js/org_chart.js' %}"></script>
+{% endblock content %}
