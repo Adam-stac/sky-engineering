@@ -41,7 +41,7 @@
             <a href="{% url 'messages_app:inbox' %}" class="nav-link {% if request.resolver_match.namespace == 'messages_app' %}active{% endif %}">
                 <i class="bi bi-envelope"></i> Messages
             </a>
-            <a href="#" class="nav-link">
+            <a href="{% url 'schedule:schedule_home' %}" class="nav-link {% if 'schedule' in request.path %}active{% endif %}">
                 <i class="bi bi-calendar"></i> Schedule
             </a>
             <a href="{% url 'reports:index' %}" class="nav-link {% if 'reports' in request.path %}active{% endif %}">
