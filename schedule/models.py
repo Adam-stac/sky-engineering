@@ -1,12 +1,13 @@
 from django.db import models
 
+
 class Meeting(models.Model):
     PLATFORM_CHOICES = [
-        ("teams", "Microsoft Teams"),
-        ("zoom", "Zoom"),
-        ("slack", "Slack"),
-        ("google_meet", "Google Meet"),
-        ("in_person", "In Person"),
+        ('teams', 'Microsoft Teams'),
+        ('zoom', 'Zoom'),
+        ('slack', 'Slack'),
+        ('google_meet', 'Google Meet'),
+        ('in_person', 'In Person'),
     ]
 
     title = models.CharField(max_length=200)
