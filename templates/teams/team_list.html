@@ -1,0 +1,309 @@
+<!-- Name: | Student ID: | Student: Student 1 | Feature: Team page -->
+{% extends 'core/base.html' %}
+{% load static %}
+{% block extra_css %}
+<link href="{% static 'css/teams.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block title %}Teams - Sky Engineering{% endblock %}
+
+{% block content %}
+<!-- This is the page heading and short description for the Team section. -->
+<div class="d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3 mb-4">
+    <div>
+        <p class="page-title">Teams</p>
+        <p class="page-sub">Student 1 page for team discovery, search, contact, meeting requests, skills, and dependencies.</p>
+    </div>
+</div>
+
+<!-- This search form helps users find teams by team, manager, department, or contact details. -->
+<div class="card p-3 mb-4">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-lg-10">
+            <label for="id_q" class="form-label small text-muted">Search teams, departments, or managers</label>
+            <input
+                id="id_q"
+                type="text"
+                name="q"
+                value="{{ search_query }}"
+                class="form-control"
+                placeholder="Try Platform, Security or Core Services"
+            >
+        </div>
+        <div class="col-lg-2 d-grid">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
+
+<!-- This table shows the meeting requests saved from the Team page form. -->
+<div class="card p-3 mb-4">
+    <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+        <p class="section-title mb-0">Scheduled Meetings</p>
+        <span class="text-muted small">Saved from the Team page meeting form</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Title</th>
+                    <th>Date and Time</th>
+                    <th>Platform</th>
+                    <th>Requested By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for meeting in recent_meetings %}
+                <tr>
+                    <td>{{ meeting.team.team_name }}</td>
+                    <td>{{ meeting.title }}</td>
+                    <td>{{ meeting.scheduled_for|date:"d M Y, H:i" }}</td>
+                    <td>{{ meeting.get_platform_display }}</td>
+                    <td>{{ meeting.requested_by.get_full_name|default:meeting.requested_by.username }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">No meetings have been scheduled yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Each team is shown inside an accordion so the page stays tidy and easy to read. -->
+<div class="accordion team-accordion" id="teamAccordion">
+    {% for team in teams %}
+    <div class="accordion-item team-card mb-3">
+        <h2 class="accordion-header" id="{{ team.heading_id }}">
+            <button
+                class="accordion-button {% if not team.show_expanded %}collapsed{% endif %}"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#{{ team.accordion_id }}"
+                aria-expanded="{% if team.show_expanded %}true{% else %}false{% endif %}"
+                aria-controls="{{ team.accordion_id }}"
+            >
+                <div class="team-accordion-summary">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="section-title mb-0">{{ team.team_name }}</span>
+                        {% if team.status == 'active' %}
+                        <span class="badge-status badge-active">Active</span>
+                        {% elif team.status == 'restructuring' %}
+                        <span class="badge-status badge-restructuring">Restructuring</span>
+                        {% else %}
+                        <span class="badge-status badge-disbanded">Disbanded</span>
+                        {% endif %}
+                    </div>
+                    <p class="text-muted small mb-1">{{ team.department.department_name }} | Manager:
+                        {% if team.manager %}
+                            {{ team.manager.get_full_name|default:team.manager.username }}
+                        {% else %}
+                            Unassigned
+                        {% endif %}
+                    </p>
+                    <p class="mb-0 team-summary-text">{{ team.description|default:team.purpose|default:"No team summary has been added yet." }}</p>
+                </div>
+                <div class="team-actions ms-auto">
+                    {% if team.email_target %}
+                    <a class="btn btn-outline-primary btn-sm" href="mailto:{{ team.email_target }}?subject=Team%20Contact%20-%20{{ team.team_name|urlencode }}">
+                        <i class="bi bi-envelope"></i> Email Team
+                    </a>
+                    {% else %}
+                    <button type="button" class="btn btn-outline-secondary btn-sm" disabled>
+                        <i class="bi bi-envelope"></i> No Email
+                    </button>
+                    {% endif %}
+                    {% if team.manager_id %}
+                    <a class="btn btn-outline-dark btn-sm" href="{% url 'messages_app:new' %}?recipient={{ team.manager_id }}">
+                        <i class="bi bi-chat-left-text"></i> Internal Message
+                    </a>
+                    {% endif %}
+                </div>
+            </button>
+        </h2>
+        <div
+            id="{{ team.accordion_id }}"
+            class="accordion-collapse collapse {% if team.show_expanded %}show{% endif %}"
+            aria-labelledby="{{ team.heading_id }}"
+            data-bs-parent="#teamAccordion"
+        >
+        <div class="accordion-body">
+
+            <!-- These small cards show the most important team details first. -->
+            <div class="row g-3 mb-3">
+                <div class="col-md-6 col-xl-3">
+                    <div class="team-info-box">
+                        <p class="team-info-label">Manager</p>
+                        <p class="team-info-value">
+                            {% if team.manager %}
+                                {{ team.manager.get_full_name|default:team.manager.username }}
+                            {% else %}
+                                Unassigned
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="team-info-box">
+                        <p class="team-info-label">Team Email</p>
+                        <p class="team-info-value">{{ team.email_target|default:"Not available" }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="team-info-box">
+                        <p class="team-info-label">Members</p>
+                        <p class="team-info-value">{{ team.members.count }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="team-info-box">
+                        <p class="team-info-label">Repositories</p>
+                        <p class="team-info-value">{{ team.repositories.count }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- These boxes break the page into simple sections for easier reading. -->
+            <div class="row g-4">
+                <div class="col-xl-4">
+                    <div class="team-section-box">
+                        <p class="team-section-heading">Skills</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for skill in team.skill_tags %}
+                            <span class="team-chip">{{ skill }}</span>
+                            {% empty %}
+                            <span class="text-muted small">No skills have been added for this team yet.</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="team-section-box">
+                        <p class="team-section-heading">Contact Channels</p>
+                        <ul class="team-simple-list">
+                            <li>Email: {{ team.email_target|default:"Not available" }}</li>
+                            <li>Slack: {{ team.slack_channel|default:"Not available" }}</li>
+                            <li>Teams: {{ team.teams_channel|default:"Not available" }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-xl-4">
+                    <div class="team-section-box">
+                        <p class="team-section-heading">Upstream Dependencies</p>
+                        <ul class="team-simple-list">
+                            {% for dependency in team.upstream_dependencies.all %}
+                            <li>{{ dependency.target_team.team_name }}{% if dependency.criticality_level %} - {{ dependency.criticality_level|title }}{% endif %}</li>
+                            {% empty %}
+                            <li class="text-muted">No upstream dependencies recorded.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="team-section-box">
+                        <p class="team-section-heading">Downstream Dependencies</p>
+                        <ul class="team-simple-list">
+                            {% for dependency in team.downstream_dependencies.all %}
+                            <li>{{ dependency.source_team.team_name }}{% if dependency.criticality_level %} - {{ dependency.criticality_level|title }}{% endif %}</li>
+                            {% empty %}
+                            <li class="text-muted">No downstream dependencies recorded.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-xl-5">
+                    <div class="team-section-box">
+                        <p class="team-section-heading">Team Members</p>
+                        <ul class="team-simple-list">
+                            {% for member in team.members.all %}
+                            <li>
+                                {{ member.user.get_full_name|default:member.user.username }}
+                                <span class="text-muted">({{ member.role_in_team }})</span>
+                            </li>
+                            {% empty %}
+                            <li class="text-muted">No team members assigned yet.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-7">
+                    <div class="team-section-box">
+                        <p class="team-section-heading">Repositories</p>
+                        <ul class="team-simple-list">
+                            {% for repository in team.repositories.all %}
+                            <li>
+                                {{ repository.repository_name }}
+                                {% if repository.primary_language %}
+                                    <span class="text-muted">({{ repository.primary_language }})</span>
+                                {% endif %}
+                            </li>
+                            {% empty %}
+                            <li class="text-muted">No repositories recorded for this team yet.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- This form lets the user save a meeting request for one selected team. -->
+            <div class="row g-4 mt-1">
+                <div class="col-xl-7">
+                    <div class="team-section-box team-meeting-box">
+                        <p class="team-section-heading">Schedule Meeting</p>
+                        <form method="post" class="row g-3">
+                            {% csrf_token %}
+                            <input type="hidden" name="team_id" value="{{ team.id }}">
+                            <div class="col-md-6">
+                                <label class="form-label">Title</label>
+                                {{ meeting_form.title }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Date and time</label>
+                                {{ meeting_form.scheduled_for }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Platform</label>
+                                {{ meeting_form.platform }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Message</label>
+                                {{ meeting_form.message }}
+                            </div>
+                            {% if meeting_form.errors %}
+                            <div class="col-12">
+                                <div class="alert alert-danger py-2 mb-0">
+                                    {{ meeting_form.errors }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="col-12 d-flex flex-wrap gap-2">
+                                <button type="submit" class="btn btn-primary">Save Meeting Request</button>
+                                {% if team.email_target %}
+                                <a class="btn btn-outline-secondary" href="mailto:{{ team.email_target }}?subject=Meeting%20Request%20-%20{{ team.team_name|urlencode }}">
+                                    Send by Email
+                                </a>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    {% empty %}
+    <div class="card p-4 text-center">
+            <p class="section-title mb-2">No teams found</p>
+            <p class="text-muted mb-0">Try a different search word or check the sample data.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
