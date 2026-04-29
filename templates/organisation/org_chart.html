@@ -1,7 +1,8 @@
+<!-- Name: Adam | Student ID: W2039612 | Student: Student 2 | Feature: Organisation -->
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Org Chart - Sky Engineering{% endblock %}
+{% block title %}{{ department.department_name }} - Sky Engineering{% endblock %}
 
 {% block extra_css %}
 <link href="{% static 'css/organisation.css' %}" rel="stylesheet">
@@ -10,18 +11,74 @@
 {% block content %}
 <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
-        <p class="page-title">Org Chart</p>
-        <p class="page-sub">Visual structure of departments and teams</p>
+        <p class="page-title">{{ department.department_name }}</p>
+        <p class="page-sub">{{ department.description|default:"No description provided" }}</p>
     </div>
-    <a href="{% url 'organisation:org_home' %}" class="btn-outline-custom">
+    <a href="{% url 'organisation:department_list' %}" class="btn-outline-custom">
         <i class="bi bi-arrow-left"></i> Back
     </a>
 </div>
 
-<div class="card p-3">
-    <div id="org-chart-container" data-chart='{{ chart_data|safe }}'></div>
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <p class="stat-label">Teams</p>
+            <p class="stat-value">{{ team_count }}</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <p class="stat-label">Leader</p>
+            <p class="stat-value" style="font-size:15px;">{{ department.leader.get_full_name|default:"Unassigned" }}</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <p class="stat-label">Location</p>
+            <p class="stat-value" style="font-size:15px;">{{ department.location|default:"Not set" }}</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <p class="stat-label">Created</p>
+            <p class="stat-value" style="font-size:15px;">{{ department.created_date }}</p>
+        </div>
+    </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<script src="{% static 'js/org_chart.js' %}"></script>
+<div class="card p-3">
+    <p class="section-title mb-3">Teams in this department</p>
+    <table class="table table-hover mb-0">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Manager</th>
+                <th>Status</th>
+                <th>Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td>{{ team.team_name }}</td>
+                <td>{{ team.manager.get_full_name|default:"Unassigned" }}</td>
+                <td>
+                    {% if team.status == 'active' %}
+                        <span class="badge-status badge-active">Active</span>
+                    {% elif team.status == 'restructuring' %}
+                        <span class="badge-status badge-restructuring">Restructuring</span>
+                    {% else %}
+                        <span class="badge-status badge-disbanded">Disbanded</span>
+                    {% endif %}
+                </td>
+                <td>{{ team.contact_email|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center text-muted py-4">No teams in this department yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}
